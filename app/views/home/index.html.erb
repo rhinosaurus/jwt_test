@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>Welcome!</title>
+    </head>
+    <body>
+        <div>
+            You are successfully logged in using the API!<br><br>
+            <b>Your Token Contains</b><br>
+            <pre><%= @current_token.to_yaml %></pre><br><br>
+            <b>Our Items</b>
+        </div>
+        <div id="react-test"></div>
+        <%= javascript_include_tag "application" %>
+    </body>
+</html>

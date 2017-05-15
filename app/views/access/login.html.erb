@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>JWT Test for Fexy</title>
+        <style>
+            body {
+                background-color: #E74C3C;
+            }
+            #loginbox {
+                margin: 0 auto;
+                margin-top: 10%;
+                width: 300px;
+                text-align: center;
+                padding: 10px;
+                background-color: white;
+                border-radius: 5px;
+                box-shadow: 2px 2px 5px #bf2718;
+            }
+            #loginbox form > * {
+                width: 90%;
+                padding: 4px;
+                margin: 4px;
+            }
+        </style>
+
+        <script>
+            var authValue = document.cookie.replace(/(?:(?:^|.*;\s*)auth_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            if( authValue ) {
+                window.location = '/home/index';
+            }
+            var doLogin = () => {
+
+                let selection = document.querySelectorAll('input'),
+                    params = {},
+                    i = selection.length;
+
+                while( i-- ) {
+                    params[ selection[ i ].name ] = selection[ i ].value;
+                }
+
+                fetch( '/api/v1/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(params)
+                } ).then((resp) => {
+                    return resp.json();
+                }).then((resp) => {
+                    if( resp.error ) {
+                        alert( 'Wrong username or password.' );
+                    } else if( resp.auth_token ) {
+                        document.cookie = "auth_token=" + resp.auth_token + "; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT;";
+                        window.location = "/home/index";
+                    }
+                }).catch((err) => {
+                    alert( 'Invalid credentials.' );
+                })
+            };
+        </script>
+    </head>
+    <body>
+        <div id="loginbox">
+            <form onsubmit="event.preventDefault(); doLogin()">
+                <input type="text" placeholder="Email" name="email"/><br>
+                <input type="password" placeholder="Password" name="password"/><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </body>
+</html>

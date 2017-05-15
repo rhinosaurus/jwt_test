@@ -1,0 +1,3 @@
+rvm use ruby-2.3.3@rails5001
+#rvm use ruby-2.4.1@rails510rc1
+rvm_trust_rvmrcs_flag=1
